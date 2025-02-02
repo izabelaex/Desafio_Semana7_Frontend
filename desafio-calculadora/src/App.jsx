@@ -10,9 +10,8 @@ const App = () => {
   const [year, setYear] = useState("");
   const [age, setAge] = useState(null);
   const [error, setError] = useState("");
-
   const handleSubmit = () => {
-    const birthDate = new Date(`${year}-${month}-${day}`);
+   const birthDate = new Date(year, month - 1, day);
     const today = new Date();
 
     if (!day || !month || !year) {
@@ -20,7 +19,15 @@ const App = () => {
       setAge(null);
       return;
     }
-
+    if (
+      birthDate.getDate() !== Number(day) || 
+      birthDate.getMonth() + 1 !== Number(month) || 
+      birthDate.getFullYear() !== Number(year)
+    ) {
+      setError("Data inválida. Verifique se o dia existe no mês escolhido.");
+      setAge(null);
+      return;
+    }
     if (isNaN(birthDate.getTime()) || day < 1 || day > 31 || month < 1 || month > 12) {
       setError("Data inválida.");
       setAge(null);
